@@ -1,0 +1,54 @@
+<script>
+  function getVRLTracking() {
+    const cosignmentNo = document.getElementById("cosignmentNo").value;
+    const showTransit = document.getElementById("showTransit").checked;
+
+    if (cosignmentNo.length < 1) {
+      document.getElementById("userMessageDiv").innerHTML = "Box num or last name can't be empty";
+      return;
+    }
+    const trackingData = {
+      'cosignmentNo': cosignmentNo,
+      'showTransit': showTransit
+    };
+    document.getElementById("trackingInfo").innerHTML = "";
+    document.getElementById("userMessageDiv").innerHTML = "Fetching tracking info...";
+
+    fetch(
+      window.location.origin + "/wp-json/VRLTracking/" + btoa(JSON.stringify(trackingData)).replace('=', '').replace('=', ''),
+      {
+        method: "GET",
+        redirect: "follow",
+      }
+    ).then((response) => response.json())
+      .then((result) => {
+        try {
+          result = result.replace(/(^"|"$)/g, "");
+          document.getElementById("userMessageDiv").innerHTML = "";
+          const backendRes = decodeURIComponent(escape(window.atob(result)));
+
+          document.getElementById("trackingInfo").innerHTML = backendRes;
+        } catch (error) {
+          document.getElementById("userMessageDiv").innerHTML = "Error processing data.";
+          document.getElementById("trackingInfo").innerHTML = "";
+        }
+      })
+      .catch((error) => {
+        document.getElementById("userMessageDiv").innerHTML = "Error fetching data.";
+      });
+  }
+
+</script>
+
+<div>
+  <div>
+    <input type="text" id="cosignmentNo" placeholder="Enter Cosignment/LRNO" required />
+    <input type="checkbox" id="showTransit" /><label>Show Transit Details</label>
+    </br>
+    <button onclick="getVRLTracking();">Track</button>
+    </br></br>
+    <div id="userMessageDiv"></div>
+    </br>
+    <div id="trackingInfo"></div>
+  </div>
+</div>
