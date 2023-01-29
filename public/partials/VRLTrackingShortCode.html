@@ -4,7 +4,7 @@
     const showTransit = document.getElementById("showTransit").checked;
 
     if (cosignmentNo.length < 1) {
-      document.getElementById("userMessageDiv").innerHTML = "Box num or last name can't be empty";
+      document.getElementById("userMessageDiv").innerHTML = "Please Enter Consignment / LRNO";
       return;
     }
     const trackingData = {
@@ -43,8 +43,9 @@
 <div>
   <div>
     <input type="text" id="cosignmentNo" placeholder="Enter Cosignment/LRNO" required />
-    <input type="checkbox" id="showTransit" /><label>Show Transit Details</label>
     </br>
+    <input type="checkbox" id="showTransit" /><label>Show Transit Details</label>
+    </br></br>
     <button onclick="getVRLTracking();">Track</button>
     </br></br>
     <div id="userMessageDiv"></div>
